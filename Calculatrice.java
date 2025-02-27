@@ -1,26 +1,33 @@
-import java.util.Scanner;  // Importation de la classe Scanner
+import java.util.Scanner;
 
 public class Calculatrice {
     public static void main(String[] args) {
-        // Créer un objet Scanner pour lire les entrées de l'utilisateur
         Scanner scanner = new Scanner(System.in);
 
-        // Demander à l'utilisateur de saisir le premier nombre
+        // Demande les nombres
         System.out.print("Entrez le premier nombre : ");
-        double num1 = scanner.nextDouble();
+        double nombre1 = scanner.nextDouble();
 
-        // Demander à l'utilisateur de saisir le deuxième nombre
         System.out.print("Entrez le deuxième nombre : ");
-        double num2 = scanner.nextDouble();
+        double nombre2 = scanner.nextDouble();
 
-        // Demander à l'utilisateur de saisir l'opérateur
-        System.out.print("Entrez l'opérateur (+, -, *, /) : ");
-        char operation = scanner.next().charAt(0);  // On récupère le premier caractère
+        // Demande l'opérateur avec validation
+        char operateur;
+        while (true) { // Boucle infinie jusqu'à ce qu'on ait un opérateur valide
+            System.out.print("Entrez un opérateur (+, -, *, /) : ");
+            operateur = scanner.next().charAt(0);
 
-        // Afficher la confirmation de la saisie
-        System.out.println("Vous avez entré : " + num1 + " " + operation + " " + num2);
+            // Vérifie si l'opérateur est valide
+            if (operateur == '+' || operateur == '-' || operateur == '*' || operateur == '/') {
+                break; // Sort de la boucle si l'opérateur est valide
+            } else {
+                System.out.println("Erreur : opérateur invalide ! Veuillez entrer +, -, * ou /.");
+            }
+        }
 
-        // Fermer le scanner
+        // Affichage de la confirmation
+        System.out.println("Vous avez entré : " + nombre1 + " " + operateur + " " + nombre2);
+
         scanner.close();
     }
 }
