@@ -3,30 +3,62 @@ import java.util.Scanner;
 public class Calculatrice {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        double nombre1, nombre2, resultat = 0;
+        char operateur;
+        boolean operateurValide;
 
-        // Demande les nombres
+        // Saisie des nombres
         System.out.print("Entrez le premier nombre : ");
-        double nombre1 = scanner.nextDouble();
+        while (!scanner.hasNextDouble()) { 
+            System.out.println("Erreur : Veuillez entrer un nombre valide !");
+            scanner.next(); // Efface l'entrée incorrecte
+            System.out.print("Entrez le premier nombre : ");
+        }
+        nombre1 = scanner.nextDouble();
 
         System.out.print("Entrez le deuxième nombre : ");
-        double nombre2 = scanner.nextDouble();
+        while (!scanner.hasNextDouble()) { 
+            System.out.println("Erreur : Veuillez entrer un nombre valide !");
+            scanner.next(); 
+            System.out.print("Entrez le deuxième nombre : ");
+        }
+        nombre2 = scanner.nextDouble();
 
-        // Demande l'opérateur avec validation
-        char operateur;
-        while (true) { // Boucle infinie jusqu'à ce qu'on ait un opérateur valide
+        // Saisie et validation de l'opérateur
+        do {
             System.out.print("Entrez un opérateur (+, -, *, /) : ");
             operateur = scanner.next().charAt(0);
 
-            // Vérifie si l'opérateur est valide
-            if (operateur == '+' || operateur == '-' || operateur == '*' || operateur == '/') {
-                break; // Sort de la boucle si l'opérateur est valide
-            } else {
-                System.out.println("Erreur : opérateur invalide ! Veuillez entrer +, -, * ou /.");
+            operateurValide = (operateur == '+' || operateur == '-' || operateur == '*' || operateur == '/');
+            
+            if (!operateurValide) {
+                System.out.println("Opérateur invalide, veuillez réessayer.");
             }
+        } while (!operateurValide);
+
+        // Effectuer le calcul
+        switch (operateur) {
+            case '+':
+                resultat = nombre1 + nombre2;
+                break;
+            case '-':
+                resultat = nombre1 - nombre2;
+                break;
+            case '*':
+                resultat = nombre1 * nombre2;
+                break;
+            case '/':
+                if (nombre2 == 0) {
+                    System.out.println("Erreur : Division par zéro impossible !");
+                    scanner.close();
+                    return;
+                }
+                resultat = nombre1 / nombre2;
+                break;
         }
 
-        // Affichage de la confirmation
-        System.out.println("Vous avez entré : " + nombre1 + " " + operateur + " " + nombre2);
+        // Affichage du résultat
+        System.out.println("Résultat : " + nombre1 + " " + operateur + " " + nombre2 + " = " + resultat);
 
         scanner.close();
     }
