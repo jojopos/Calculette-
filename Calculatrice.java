@@ -3,63 +3,65 @@ import java.util.Scanner;
 public class Calculatrice {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        double nombre1, nombre2, resultat = 0;
-        char operateur;
-        boolean operateurValide;
-
-        // Saisie des nombres
-        System.out.print("Entrez le premier nombre : ");
-        while (!scanner.hasNextDouble()) { 
-            System.out.println("Erreur : Veuillez entrer un nombre valide !");
-            scanner.next(); // Efface l'entrée incorrecte
-            System.out.print("Entrez le premier nombre : ");
-        }
-        nombre1 = scanner.nextDouble();
-
-        System.out.print("Entrez le deuxième nombre : ");
-        while (!scanner.hasNextDouble()) { 
-            System.out.println("Erreur : Veuillez entrer un nombre valide !");
-            scanner.next(); 
-            System.out.print("Entrez le deuxième nombre : ");
-        }
-        nombre2 = scanner.nextDouble();
-
-        // Saisie et validation de l'opérateur
-        do {
-            System.out.print("Entrez un opérateur (+, -, *, /) : ");
-            operateur = scanner.next().charAt(0);
-
-            operateurValide = (operateur == '+' || operateur == '-' || operateur == '*' || operateur == '/');
-            
-            if (!operateurValide) {
-                System.out.println("Opérateur invalide, veuillez réessayer.");
+        
+        double nombre1 = demanderNombre(scanner, "Entrez le premier nombre : ");
+        double nombre2 = demanderNombre(scanner, "Entrez le deuxième nombre : ");
+        char operateur = getValidOperator(scanner);
+        
+        double resultat = calculerResultat(nombre1, nombre2, operateur);
+        
+        System.out.println("Résultat : " + nombre1 + " " + operateur + " " + nombre2 + " = " + resultat);
+        
+        scanner.close();
+    }
+    
+    private static double demanderNombre(Scanner scanner, String message) {
+        double nombre;
+        while (true) {
+            System.out.print(message);
+            if (scanner.hasNextDouble()) {
+                nombre = scanner.nextDouble();
+                scanner.nextLine(); // Pour consommer la fin de ligne
+                return nombre;
+            } else {
+                System.out.println("Erreur : Veuillez entrer un nombre valide !");
+                scanner.next(); // Efface l'entrée incorrecte et permet de recommencer
             }
-        } while (!operateurValide);
-
-        // Effectuer le calcul
+        }
+    }
+    
+    private static char getValidOperator(Scanner scanner) {
+        char operateur;
+        while (true) {
+            System.out.print("Entrez un opérateur (+, -, *, /) : ");
+            String input = scanner.next();
+            
+            if (input.length() == 1) {
+                operateur = input.charAt(0);
+                if (operateur == '+' || operateur == '-' || operateur == '*' || operateur == '/') {
+                    return operateur;
+                }
+            }
+            System.out.println("Erreur : Opérateur invalide ! Veuillez entrer +, -, * ou /.");
+        }
+    }
+    
+    private static double calculerResultat(double nombre1, double nombre2, char operateur) {
         switch (operateur) {
             case '+':
-                resultat = nombre1 + nombre2;
-                break;
+                return nombre1 + nombre2;
             case '-':
-                resultat = nombre1 - nombre2;
-                break;
+                return nombre1 - nombre2;
             case '*':
-                resultat = nombre1 * nombre2;
-                break;
+                return nombre1 * nombre2;
             case '/':
                 if (nombre2 == 0) {
                     System.out.println("Erreur : Division par zéro impossible !");
-                    scanner.close();
-                    return;
+                    return Double.NaN;
                 }
-                resultat = nombre1 / nombre2;
-                break;
+                return nombre1 / nombre2;
+            default:
+                return 0;
         }
-
-        // Affichage du résultat
-        System.out.println("Résultat : " + nombre1 + " " + operateur + " " + nombre2 + " = " + resultat);
-
-        scanner.close();
     }
 }
